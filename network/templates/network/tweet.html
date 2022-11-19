@@ -1,0 +1,20 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+Signed in as <strong>{{ user.username }}</strong>
+
+<form action="{% url 'tweet' %}" method="POST">
+     {% csrf_token %}
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1">Write Tweet</label>
+    <textarea class="form-control" name="exampleFormControlTextarea1" rows="3"></textarea>
+  </div>
+  <input type="submit" value="Tweet">
+</form>
+
+{% for tweet in tweets %}
+     <li>{{tweet}}</li>
+{% endfor %}
+
+{% endblock %}

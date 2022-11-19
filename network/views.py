@@ -6,9 +6,30 @@ from django.urls import reverse
 
 from .models import User
 
+tweets = []
+
 
 def index(request):
     return render(request, "network/index.html")
+
+    
+
+
+def tweet(request):
+    
+    if request.method == "POST":
+        form_contents = request.POST["exampleFormControlTextarea1"]
+        print(form_contents)
+
+        tweets.append(form_contents)
+
+
+
+
+
+    return render(request, "network/tweet.html", {
+        "tweets": tweets
+        })
 
 
 def login_view(request):
