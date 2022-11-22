@@ -6,26 +6,22 @@ from django.urls import reverse
 
 from .models import User
 
+# TEMP
 tweets = []
 
 
 def index(request):
     return render(request, "network/index.html")
 
-    
 
-
+# TEMP - Write Tweets and view previous posts
 def tweet(request):
     
     if request.method == "POST":
-        form_contents = request.POST["exampleFormControlTextarea1"]
+        form_contents = request.POST["writeTweet"]
         print(form_contents)
 
         tweets.append(form_contents)
-
-
-
-
 
     return render(request, "network/tweet.html", {
         "tweets": tweets
