@@ -5,6 +5,7 @@ from django.db import models
 class User(AbstractUser):
     pass
 
+# Temp. related name. See: https://docs.djangoproject.com/en/dev/ref/models/fields/#django.db.models.ForeignKey.related_name
 class Follow(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="+")
     following = models.ForeignKey(User, on_delete=models.CASCADE)
