@@ -1,0 +1,16 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+Signed in as <strong>{{ user.username }}</strong>
+
+{% for tweet in foo %}
+
+<ul>
+     <li>{{tweet.tweetText}}</li>
+</ul>
+
+{% endfor %}
+
+
+{% endblock %}

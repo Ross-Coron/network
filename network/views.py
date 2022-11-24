@@ -4,7 +4,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+# Import all models
+from .models import *
 
 # TEMP
 tweets = []
@@ -26,6 +27,20 @@ def tweet(request):
     return render(request, "network/tweet.html", {
         "tweets": tweets
         })
+
+# TEMP
+def profile(request):
+
+    foo = Tweet.objects.all()
+    print(foo)
+
+    return render(request, "network/profile.html", {
+        "foo": foo
+        })
+
+
+
+
 
 
 def login_view(request):
