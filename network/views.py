@@ -11,6 +11,7 @@ from .models import *
 tweets = []
 
 
+
 def index(request):
     return render(request, "network/index.html")
 
@@ -19,14 +20,23 @@ def index(request):
 def tweet(request):
     
     if request.method == "POST":
-        form_contents = request.POST["writeTweet"]
+        form_contents = request.POST["exampleFormControlTextarea1"]
         print(form_contents)
+
+        # TODO 
+
+    
+
+        newTweet = Tweet(author=request.user, tweetText=form_contents)
+        newTweet.save()
+
 
         tweets.append(form_contents)
 
     return render(request, "network/tweet.html", {
         "tweets": tweets
         })
+
 
 # TEMP
 def profile(request):
@@ -37,10 +47,6 @@ def profile(request):
     return render(request, "network/profile.html", {
         "foo": foo
         })
-
-
-
-
 
 
 def login_view(request):
