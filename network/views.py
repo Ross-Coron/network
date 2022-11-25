@@ -7,10 +7,6 @@ from django.urls import reverse
 # Import all models
 from .models import *
 
-# TEMP
-tweets = []
-
-
 
 def index(request):
     return render(request, "network/index.html")
@@ -23,13 +19,8 @@ def tweet(request):
         form_contents = request.POST["exampleFormControlTextarea1"]
         print(form_contents)
 
-        # TODO 
-
-    
-
         newTweet = Tweet(author=request.user, tweetText=form_contents)
         newTweet.save()
-
 
         tweets.append(form_contents)
 
@@ -41,11 +32,11 @@ def tweet(request):
 # TEMP
 def profile(request):
 
-    foo = Tweet.objects.all()
-    print(foo)
+    tweets = Tweet.objects.all()
+    print(tweets)
 
     return render(request, "network/profile.html", {
-        "foo": foo
+        "tweets": tweets
         })
 
 
