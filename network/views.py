@@ -14,7 +14,7 @@ def index(request):
 
 # TEMP - Write Tweets and view previous posts
 def tweet(request):
-    
+
     if request.method == "POST":
         form_contents = request.POST["exampleFormControlTextarea1"]
         print(form_contents)
@@ -22,22 +22,40 @@ def tweet(request):
         newTweet = Tweet(author=request.user, tweetText=form_contents)
         newTweet.save()
 
-        tweets.append(form_contents)
-
-    return render(request, "network/tweet.html", {
-        "tweets": tweets
-        })
+        return HttpResponseRedirect(reverse("allPosts"))
 
 
-# TEMP
+    return render(request, "network/tweet.html")
+
+
+
+
+
+# Profile page
 def profile(request):
 
-    tweets = Tweet.objects.all()
+    # Filter tweets by user
+    tweets = Tweet.objects.filter(author=request.user)
+
+    # Debug print
     print(tweets)
 
     return render(request, "network/profile.html", {
         "tweets": tweets
         })
+
+
+def allPosts(request):
+
+    tweets = Tweet.objects.all()
+    print(tweets)
+
+    return render(request, "network/allPosts.html", {
+        "tweets": tweets
+    })
+
+
+
 
 
 def login_view(request):
@@ -63,6 +81,9 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
+
+
+
 
 
 def register(request):

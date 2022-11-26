@@ -11,7 +11,7 @@
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="{% url 'index' %}">Network</a>
-          
+
             <div>
               <ul class="navbar-nav mr-auto">
                 <!-- Display NavBar options based on signed in status -->
@@ -21,7 +21,7 @@
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'index' %}">All Posts</a>
+                  <a class="nav-link" href="{% url 'allPosts' %}">All Posts</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
@@ -41,7 +41,7 @@
               </ul>
             </div>
           </nav>
-        
+
         <div class="body">
             {% block body %}
             {% endblock %}
