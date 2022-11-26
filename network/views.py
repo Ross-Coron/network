@@ -22,15 +22,15 @@ def tweet(request):
         newTweet = Tweet(author=request.user, tweetText=form_contents)
         newTweet.save()
 
-        tweets.append(form_contents)
+        return render(request, "network/profile.html")
 
-    return render(request, "network/tweet.html", {
-        "tweets": tweets
-        })
+    else:
+        return render(request, "network/tweet.html")
+
 
 
 # TEMP
-def profile(request):
+def allPosts(request):
 
     tweets = Tweet.objects.all()
     print(tweets)

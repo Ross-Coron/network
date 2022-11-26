@@ -6,8 +6,9 @@ Signed in as <strong>{{ user.username }}</strong>
 
 {% for tweet in tweets %}
 <ul>
-     <li>{{tweet.tweetText}}</li>
+     <li>{{tweet.author}} wrote: "{{tweet.tweetText}}" at {{tweet.posted}} </li>
 </ul>
 {% endfor %}
 
 {% endblock %}
+
