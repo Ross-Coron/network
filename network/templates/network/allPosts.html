@@ -2,7 +2,11 @@
 
 {% block body %}
 
-Signed in as <strong>{{ user.username }}</strong>
+<br>
+Debug: Signed in as <strong>{{ user.username }}</strong>
+<br>
+<br>
+
 
 {% for tweet in tweets %}
 <ul>
@@ -11,4 +15,3 @@ Signed in as <strong>{{ user.username }}</strong>
 {% endfor %}
 
 {% endblock %}
-
