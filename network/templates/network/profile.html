@@ -5,6 +5,16 @@
 <br>
 Debug: Signed in as <strong>{{ user.username }}</strong>
 <br>
+Debug: Current followers: 
+
+{% for follower in followers %}
+{{follower.following}}
+{% empty %}
+None!
+{% endfor %}
+
+
+<br>
 <br>
 
 

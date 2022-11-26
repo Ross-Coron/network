@@ -45,8 +45,12 @@ def profile(request):
     tweets = Tweet.objects.filter(author=request.user)
     print(tweets)
 
+    followers = Follow.objects.filter(user=request.user)
+    print(followers)
+
     return render(request, "network/profile.html", {
-        "tweets": tweets
+        "tweets": tweets, 
+        "followers": followers
     })
 
 
