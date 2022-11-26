@@ -12,7 +12,7 @@ def index(request):
     return render(request, "network/index.html")
 
 
-# TEMP - Write Tweets and view previous posts
+# Write Tweet
 def tweet(request):
 
     if request.method == "POST":
@@ -28,21 +28,7 @@ def tweet(request):
         return render(request, "network/tweet.html")
 
 
-
-# TEMP
-def allPosts(request):
-
-    # Filter tweets by user
-    tweets = Tweet.objects.filter(author=request.user)
-
-    # Debug print
-    print(tweets)
-
-    return render(request, "network/allPosts.html", {
-        "tweets": tweets
-        })
-
-
+# View all Tweets
 def allPosts(request):
 
     tweets = Tweet.objects.all()
@@ -53,8 +39,20 @@ def allPosts(request):
     })
 
 
+# View user profile and their Tweets
+def profile(request):
+
+    tweets = Tweet.objects.filter(author=request.user)
+    print(tweets)
+
+    return render(request, "network/profile.html", {
+        "tweets": tweets
+    })
 
 
+
+
+# Log in, out, register
 
 def login_view(request):
     if request.method == "POST":
@@ -75,14 +73,9 @@ def login_view(request):
     else:
         return render(request, "network/login.html")
 
-
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
-
-
-
-
 
 def register(request):
     if request.method == "POST":
