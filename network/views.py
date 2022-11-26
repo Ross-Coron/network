@@ -32,12 +32,28 @@ def tweet(request):
 # TEMP
 def allPosts(request):
 
-    tweets = Tweet.objects.all()
+    # Filter tweets by user
+    tweets = Tweet.objects.filter(author=request.user)
+
+    # Debug print
     print(tweets)
 
     return render(request, "network/allPosts.html", {
         "tweets": tweets
         })
+
+
+def allPosts(request):
+
+    tweets = Tweet.objects.all()
+    print(tweets)
+
+    return render(request, "network/allPosts.html", {
+        "tweets": tweets
+    })
+
+
+
 
 
 def login_view(request):
@@ -63,6 +79,9 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
+
+
+
 
 
 def register(request):
