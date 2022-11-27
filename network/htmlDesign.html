@@ -1,0 +1,56 @@
+  <!doctype html>
+  <html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <style>
+
+      .card {
+        background-color: #F5F5F5;
+        border: 2px solid dimgrey;
+     }
+
+  </style>
+</head>
+
+<body>
+
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+ <div class="ms-2 card" style="width: 35rem;">
+   <div class="card-body rounded">
+     <h5 class="card-title"><b>@Ross</b></h5>
+     <h6 class="card-subtitle mb-2 text-muted">18:01, 26 November 2022</h6>
+     <p class="card-text">Magna laboris esse do ad. Lorem ipsum do voluptate esse consequat nisi ad elit eiusmod sit duis ut sit laboris commodo ullamco ea aute duis eu.</p>
+     <button class="btn btn-secondary float-left" id="foo">&hearts;&nbsp;<span id="bar">1</span></button> 
+     <button class="btn btn-primary float-end">Edit</button>
+  </div>
+</div>
+
+
+<script>
+
+   function like() {
+
+      let num = document.querySelector("#bar").innerHTML
+      let heart = document.querySelector("#foo");
+
+      if (heart.classList.contains("btn-secondary")) {
+         this.className = "btn btn-danger float-left";
+         num++;
+         document.querySelector("#bar").innerHTML = num;
+      } else {
+         this.className = "btn btn-secondary float-left";
+         num--;
+         document.querySelector("#bar").innerHTML = num;
+      }
+   }
+
+   document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector("#foo").onclick = like;
+  });
+   
+</script>
