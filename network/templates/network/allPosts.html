@@ -10,17 +10,34 @@ Debug: Signed in as <strong>{{ user.username }}</strong>
 
 {% for tweet in tweets %}
 
-<div class="ms-2 card" style="width: 35rem;">
+<div class="ms-2 card" style="width: 35rem" data-id="{{tweet.id}}";>
   <div class="card-body rounded">
-     <h5 class="card-title"><b>@{{ tweet.author }}</b></h5>
-     <h6 class="card-subtitle mb-2 text-muted">{{tweet.posted}}</h6>
-     <p class="card-text">{{tweet.tweetText}}</p>
-     <button class="btn btn-secondary float-left" id="foo">&hearts;&nbsp;<span id="bar">0</span></button> 
-     <button class="btn btn-primary float-end">Edit</button>
-</div>
+   <h5 class="card-title"><b>@{{ tweet.author }}</b></h5>
+   <h6 class="card-subtitle mb-2 text-muted">{{tweet.posted}}</h6>
+   <p class="card-text">{{tweet.tweetText}}</p>
+   <button class="btn btn-secondary float-left" id="foo">&hearts;&nbsp;<span id="bar">0</span></button> 
+   <button class="btn btn-primary float-end booboo">Edit</button>
+ </div>
 </div>
 <br>
 
+
 {% endfor %}
 
-{% endblock %}
+<script>
+
+  // TEMP alert dataset-id of each Tweet
+  foo = document.getElementsByClassName('ms-2 card')
+  for (const element of foo) {
+    alert(element.dataset.id)
+  }
+  
+  // TEMP alert dataset-id of clicked Tweet - super hacky
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('.booboo').onclick = function() {
+      alert(event.target.parentElement.parentElement.dataset.id)
+    }})
+
+</script>
+
+  {% endblock %}
