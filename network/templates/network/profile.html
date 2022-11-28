@@ -2,27 +2,40 @@
 
 {% block body %}
 
+
 <br>
-Debug: Signed in as <strong>{{ user.username }}</strong>
+Debug | Signed in as <strong>{{ user.username }}</strong>
 <br>
-Debug: Number of current followers: {{followed_by.count}}. Names of current followers: 
-
-{% for follower in followed_by %}
-{{follower.followed_by}}
-{% empty %}
-None!
-{% endfor %}
-
-
-
+Debug | Following: {{ following }} / Followers: {{ followedBy }}
 <br>
 <br>
 
+
+<table style="width:100%">
+  <tr>
+    <th>User</th>
+    <th>Date</th>
+    <th>Tweet</th>
+    <th>ID</th>
+</tr>
 
 {% for tweet in tweets %}
-<ul>
-     <li>{{tweet.author}} wrote: "{{tweet.tweetText}}" at {{tweet.posted}} </li>
-</ul>
-{% endfor %}
+
+
+
+<tr>
+  <td>{{tweet.author}}</td>
+  <td>{{tweet.posted}}</td>
+  <td>{{tweet.tweetText}}</td>
+  <td>{{tweet.id}}</td>
+
+
+  </tr>
+  {% endfor %}
+
+</table>
+
+
+
 
 {% endblock %}

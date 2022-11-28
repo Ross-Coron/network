@@ -42,18 +42,13 @@ def allPosts(request):
 # View user profile and their Tweets
 def profile(request):
 
-    tweets = Tweet.objects.filter(author=request.user)
-    print(tweets)
-
-    # Following how many
-    print(request.user.foo.all().count())
-
-    followed_by = Follow.objects.filter(user=request.user)
-    print(followed_by)
-
+    # Returns in reverse chronolical order
+    tweets = Tweet.objects.filter(author=request.user).order_by('-posted')
+    
     return render(request, "network/profile.html", {
-        "tweets": tweets, 
-        "followed_by": followed_by
+        "tweets": tweets,
+        "following": request.user.foo.all().count(),
+        "followedBy": Follow.objects.filter(user=request.user).count()
     })
 
 

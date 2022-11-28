@@ -2,3 +2,7 @@
   background-color: #F5F5F5;
   border: 2px solid dimgrey;
 }
+
+table { 
+    table-layout:fixed;
+}
