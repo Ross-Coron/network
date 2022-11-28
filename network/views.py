@@ -52,8 +52,6 @@ def profile(request):
     })
 
 
-
-
 # Log in, out, register
 
 def login_view(request):
