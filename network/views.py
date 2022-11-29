@@ -40,20 +40,23 @@ def allPosts(request):
 
 
 # View user profile and their Tweets
-def profile(request):
+def profile(request, user_id):
 
     # Returns in reverse chronolical order
-    tweets = Tweet.objects.filter(author=request.user).order_by('-posted')
+    tweets = Tweet.objects.filter(author=user_id).order_by('-posted')
+    print(tweets)
+
+    profile = User.objects.get(id=user_id)
+    print(profile.foo.all())
     
     return render(request, "network/profile.html", {
         "tweets": tweets,
-        "following": request.user.foo.all().count(),
-        "followedBy": Follow.objects.filter(user=request.user).count()
+        "following": profile.foo.all().count(),
+        "followedBy": Follow.objects.filter(user=user_id).count()
     })
 
 
 # Log in, out, register
-
 def login_view(request):
     if request.method == "POST":
 
