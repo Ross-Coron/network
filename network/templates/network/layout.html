@@ -21,7 +21,9 @@
               <ul class="navbar-nav mr-auto">
                 <!-- Display NavBar options based on signed in status -->
                 {% if user.is_authenticated %}
-           <         <li class="nav-item">
+                    <li class="nav-item">
+
+                        <!-- TODO Insert link --> 
                         <a class="nav-link" href="#"><strong>{{ user.username }}</strong></a>
                     </li>
                 {% endif %}

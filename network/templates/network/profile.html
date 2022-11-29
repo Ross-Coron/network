@@ -10,14 +10,17 @@ Debug | Following: {{ following }} / Followers: {{ followedBy }}
 <br>
 <br>
 
+<h1>Profile: {{x}}</h1>
 
-<table style="width:100%">
+<table class="table">
+  <thead>
   <tr>
     <th>User</th>
     <th>Date</th>
     <th>Tweet</th>
     <th>ID</th>
 </tr>
+</thead>
 
 {% for tweet in tweets %}
 
