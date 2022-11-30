@@ -50,6 +50,7 @@ def profile(request, user_id):
     print(profile.foo.all())
     
     return render(request, "network/profile.html", {
+        "x": profile.username,
         "tweets": tweets,
         "following": profile.foo.all().count(),
         "followedBy": Follow.objects.filter(user=user_id).count()

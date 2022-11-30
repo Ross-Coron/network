@@ -24,7 +24,7 @@
                     <li class="nav-item">
 
                         <!-- TODO Insert link --> 
-                        <a class="nav-link" href="#"><strong>{{ user.username }}</strong></a>
+                        <a class="nav-link" href="{% url 'profile' user_id=user.id%}"><strong>{{ user.username }}</strong></a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
