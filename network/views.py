@@ -57,6 +57,25 @@ def profile(request, user_id):
     })
 
 
+def following(request):
+
+    # Gets all users following logged in user
+    usersFollowed = request.user.foo.all()
+    
+    # Gets
+    usersFollowedIds = []
+    for x in usersFollowed:
+        usersFollowedIds.append(x.id)
+    
+    tweets = Tweet.objects.filter(author__in=usersFollowedIds)
+    print(tweets)
+
+
+    return HttpResponse(tweets)
+
+
+
+
 # Log in, out, register
 def login_view(request):
     if request.method == "POST":
