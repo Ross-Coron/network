@@ -42,31 +42,53 @@ def allPosts(request):
 # View user profile and their Tweets
 def profile(request, user_id):
 
+    # Get list of people the logged in user follows (Follow objects)
+    followList = []
+    following = request.user.following.all()
+    for x in following:
+        print(x.user)
+        followList.append(x.user.id)
+    print(followList)
+
+
+
+    
+    # Get profile (User object)
+    profile = User.objects.get(id=user_id)
+    print("profile", profile)
+
+    if profile.id in followList:
+        print("Yes")
+    else:
+        print("No")
+
+
+
     # Returns in reverse chronolical order
     tweets = Tweet.objects.filter(author=user_id).order_by('-posted')
     print(tweets)
 
     profile = User.objects.get(id=user_id)
-    print(profile.foo.all())
+    print(profile.following.all())
+
+
     
     return render(request, "network/profile.html", {
         "x": profile.username,
         "tweets": tweets,
-        "following": profile.foo.all().count(),
+        "following": profile.following.all().count(),
         "followedBy": Follow.objects.filter(user=user_id).count()
     })
 
 
 def following(request):
 
-    # TODO - SORT!!!
-    usersFollowedIds = []
-
+ 
     # Gets all users following logged in user
-    usersFollowed = request.user.foo.all()
+    usersFollowed = request.user.following.all()
   
     # Gets IDs of users to filter with
-    
+    usersFollowedIds = []
     for x in usersFollowed:
         usersFollowedIds.append(x.user.id)
 
