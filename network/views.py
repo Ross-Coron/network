@@ -39,45 +39,47 @@ def allPosts(request):
     })
 
 
-# View user profile and their Tweets
+# View a user's profile and their Tweets
 def profile(request, user_id):
 
-    # Get list of people the logged in user follows (Follow objects)
+    # BETTER
+    profile = User.objects.get(id=user_id)
+    if Follow.objects.filter(user=user_id, followed_by=request.user).exists():
+        print("ya")
+        following_status = True
+    else:
+        print("na")
+        following_status = False
+   
+    # Get list of IDs of people the logged in user follows (Follow objects)
     followList = []
     following = request.user.following.all()
     for x in following:
-        print(x.user)
         followList.append(x.user.id)
-    print(followList)
 
-
+    # Get user of profile being viewed (User object)
+    profile = User.objects.get(id=user_id)
+    
+    
+    if profile.id in followList:
+        print("You are following")
+    else:
+        print("You are NOT following")
 
     
-    # Get profile (User object)
-    profile = User.objects.get(id=user_id)
-    print("profile", profile)
-
-    if profile.id in followList:
-        print("Yes")
-    else:
-        print("No")
-
 
 
     # Returns in reverse chronolical order
     tweets = Tweet.objects.filter(author=user_id).order_by('-posted')
     print(tweets)
 
-    profile = User.objects.get(id=user_id)
-    print(profile.following.all())
 
-
-    
     return render(request, "network/profile.html", {
         "x": profile.username,
         "tweets": tweets,
         "following": profile.following.all().count(),
-        "followedBy": Follow.objects.filter(user=user_id).count()
+        "followedBy": Follow.objects.filter(user=user_id).count(),
+        "following_status": following_status
     })
 
 
