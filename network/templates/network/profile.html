@@ -16,11 +16,11 @@ Debug | User is following? {{ following_status }}
 
 {% if following_status == True %} 
 
-<button type="button" onclick="unfollow()">Unfollow</button>
+<button type="button" onclick="followUnfollow()">Unfollow</button>
 
 {% elif following_status == False %} 
 
-<button type="button" onclick="follow()">Follow</button>
+<button type="button" onclick="followUnfollow()">Follow</button>
 
 {% endif %}
 
@@ -58,15 +58,29 @@ Debug | User is following? {{ following_status }}
 </table>
 
 <script>
- 
 
-function unfollow() {
-  alert("You clicked unfollow");
+
+
+
+function followUnfollow() {
+  
+  if (document.querySelector('button').innerHTML == "Follow") {
+    alert("Follow")
+  }
+
+  else if (document.querySelector('button').innerHTML == "Unfollow") {
+    alert("Unfollow")
+  }
+
 };
 
-function follow() {
-  alert("You clicked follow");
-};
+  
+
+
+
+
+
+
 
 
 

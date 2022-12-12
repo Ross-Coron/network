@@ -57,25 +57,7 @@
 
 <script>
 
-   function like() {
-
-      let num = document.querySelector("#bar").innerHTML
-      let heart = document.querySelector("#foo");
-
-      if (heart.classList.contains("btn-secondary")) {
-         this.className = "btn btn-danger float-left";
-         num++;
-         document.querySelector("#bar").innerHTML = num;
-      } else {
-         this.className = "btn btn-secondary float-left";
-         num--;
-         document.querySelector("#bar").innerHTML = num;
-      }
-   }
-
-   document.addEventListener('DOMContentLoaded', function() {
-      document.querySelector("#foo").onclick = like;
-  });
+  
    
 </script>
 
