@@ -4,6 +4,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+# From Mail. 
+from django.http import JsonResponse
+
 # Import all models
 from .models import *
 
@@ -154,3 +157,12 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+
+def test(request):
+    
+    print("YOU ARE HERE 1")
+
+    return JsonResponse({"message": "Success"}, status=201)
+
+   

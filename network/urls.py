@@ -12,4 +12,7 @@ urlpatterns = [
     path("profile/<int:user_id>", views.profile, name="profile"),
     path("allPosts", views.allPosts, name="allPosts"),
     path("following", views.following, name="following"),
+
+    path("test", views.test, name="test")
+
 ]
