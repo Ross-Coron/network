@@ -64,14 +64,18 @@ Debug | User is following? {{ following_status }}
 
 function followUnfollow() {
   
+  let id = 1;
+
   if (document.querySelector('button').innerHTML == "Follow") {
     alert("Follow")
     var message = "test"
     
-  fetch('/test')
+  fetch(`/test/${id}`)
       .then(response => response.json())
       .then(x => {
         console.log(x); 
+
+        alert(x.message)
   })
 
 

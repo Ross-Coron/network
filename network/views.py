@@ -159,10 +159,20 @@ def register(request):
         return render(request, "network/register.html")
 
 
-def test(request):
+def test(request, user_id):
     
-    print("YOU ARE HERE 1")
+    print(user_id)
 
-    return JsonResponse({"message": "Success"}, status=201)
+    print("Current user:", request.user.id)
+    
+    # Temp
+    following = User.objects.get(id=request.user.id).following.filter(user=3).get()
+
+    print(following.user)
+
+    #follow = User.objects.filter(username=request.user).following
+    
+
+    return JsonResponse({"message": "Success!"}, status=201)
 
    
