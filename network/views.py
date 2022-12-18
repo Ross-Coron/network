@@ -168,6 +168,12 @@ def test(request, user_id):
     # Temp
     following = User.objects.get(id=request.user.id).following.filter(user=3).get()
 
+
+    profile = User.objects.get(id=request.user.id)
+
+    profile.following.remove(following)
+
+
     print(following.user)
 
     #follow = User.objects.filter(username=request.user).following
