@@ -70,8 +70,6 @@ def profile(request, user_id):
         print("You are NOT following")
 
     
-
-
     # Returns in reverse chronolical order
     tweets = Tweet.objects.filter(author=user_id).order_by('-posted')
     print(tweets)
@@ -106,7 +104,6 @@ def following(request):
         "tweets": tweets
     })
     
-
 
 # Log in, out, register
 def login_view(request):
@@ -159,6 +156,7 @@ def register(request):
         return render(request, "network/register.html")
 
 
+# Currently here. API route to follow / unfollow user.
 def test(request, user_id):
     
     print(user_id)
@@ -180,5 +178,3 @@ def test(request, user_id):
     
 
     return JsonResponse({"message": "Success!"}, status=201)
-
-   

@@ -16,8 +16,9 @@ class Tweet(models.Model):
     posted = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.author}{self.tweetText}"
+        return f"{self.author} tweeted: {self.tweetText}"
 
 class Like(models.Model):
     tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
-    likedBy = models.ForeignKey(User, on_delete=models.CASCADE)
+    likedBy = models.ManyToManyField(User, blank=True, related_name="foo")
+     

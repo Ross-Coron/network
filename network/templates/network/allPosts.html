@@ -27,7 +27,23 @@ Debug: Signed in as <strong>{{ user.username }}</strong>
 
 <script>
 
+document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('button').forEach(button => {
+                button.onclick = function() {
 
+                  if (this.className === "btn btn-primary float-end booboo") {
+                    alert("You clicked edit")
+                    alert(this.parentElement.parentElement.dataset.id)
+                  }
+
+                  else if (this.className === "btn btn-secondary float-left") {
+
+                   alert("You clicked like")
+                    alert(this.parentElement.parentElement.dataset.id)
+                    }
+                }
+            });
+         });
 
 </script>
 
