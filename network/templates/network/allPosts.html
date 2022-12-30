@@ -23,7 +23,7 @@ Debug: Signed in as <strong>{{ user.username }}</strong>
    
    {% if user.username == tweet.author|stringformat:'s' %}
 
-   <button class="btn btn-primary float-end booboo">Edit</button>
+   <button class="btn btn-primary float-end booboo" id="baz">  Edit</button>
    {% endif %}
 
  </div>
@@ -42,6 +42,11 @@ document.addEventListener('DOMContentLoaded', function() {
                   if (this.className === "btn btn-primary float-end booboo") {
                     alert("You clicked edit")
                     alert(`Post number: ${this.parentElement.parentElement.dataset.id}`)
+
+                    // change to textarea
+                    document.querySelector("#baz").style.color = "red";
+
+
                   }
 
                   else if (this.className === "btn btn-secondary float-left") {
