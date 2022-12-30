@@ -33,14 +33,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
                   if (this.className === "btn btn-primary float-end booboo") {
                     alert("You clicked edit")
-                    alert(this.parentElement.parentElement.dataset.id)
+                    alert(`Post number: ${this.parentElement.parentElement.dataset.id}`)
                   }
 
                   else if (this.className === "btn btn-secondary float-left") {
-
-                   alert("You clicked like")
-                    alert(this.parentElement.parentElement.dataset.id)
-                    }
+                    alert("You clicked like")
+                    alert(`Post number: ${this.parentElement.parentElement.dataset.id}`)
+                  }
                 }
             });
          });
