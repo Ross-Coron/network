@@ -4,6 +4,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+# from mail
+import json
+from django.http import JsonResponse
+
+from django.views.decorators.csrf import csrf_exempt
+
 # From Mail. 
 from django.http import JsonResponse
 
@@ -36,6 +42,7 @@ def allPosts(request):
 
     tweets = Tweet.objects.all()
     print(tweets)
+
 
     return render(request, "network/allPosts.html", {
         "tweets": tweets
@@ -178,3 +185,26 @@ def test(request, user_id):
     
 
     return JsonResponse({"message": "Success!"}, status=201)
+
+
+@csrf_exempt
+def edit(request, post_id):
+
+    print("You are here")
+    print(post_id)
+
+    print(json.loads(request.body))
+
+    tweet = Tweet.objects.get(pk=post_id)
+
+    data = json.loads(request.body)
+    new_text = data.get("tweet", "t")
+    print(tweet)
+
+
+    tweet.tweetText = new_text
+    tweet.save()
+
+    print(tweet)
+
+    return JsonResponse({"message": "Tweet successfully edited", "new_text": new_text}, status=201)
