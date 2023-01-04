@@ -33,67 +33,50 @@ Debug: Signed in as <strong>{{ user.username }}</strong>
 
 <script>
 
+
 document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('button').forEach(button => {
-                button.onclick = function() {
+   document.querySelectorAll('button').forEach(button => {
+      button.onclick = function() {
 
-                  if (event.target.className === "btn btn-primary float-end booboo") {
-                    // alert("You clicked edit")
-                    // alert(`Post number: ${this.parentElement.parentElement.dataset.id}`)
+         if (event.target.className === "btn btn-primary float-end booboo") {
+            // alert("You clicked edit")
+            // alert(`Post number: ${this.parentElement.parentElement.dataset.id}`)
 
-                    const element = event.target
+            const element = event.target
+            const id = element.parentElement.parentElement.dataset.id
 
-                    if (element.parentElement.querySelector("#edit").innerText === "Edit") {
-                      element.parentElement.querySelector("#tweetText").innerHTML = '<textarea id="foo"></textarea>'
-                      element.parentElement.querySelector("#edit").innerHTML = "Save"
-                    }
+          //  const id = element.parentElement.querySelector('[data-id]');
+         //   alert(id)
 
-                    else if (element.parentElement.querySelector("#edit").innerText === "Save") {
-                      alert(element.parentElement.querySelector("#foo").value);
+            if (element.parentElement.querySelector("#edit").innerText === "Edit") {
+               element.parentElement.querySelector("#tweetText").innerHTML = '<textarea id="foo"></textarea>'
+               element.parentElement.querySelector("#edit").innerHTML = "Save"
+            
+            } else if (element.parentElement.querySelector("#edit").innerText === "Save") {
+               alert(element.parentElement.querySelector("#foo").value);
 
+               fetch(`/edit/${id}`, {
+                     method: 'POST',
+                     body: JSON.stringify({
+                        tweet: element.parentElement.querySelector("#foo").value
+                     })
+                  })
 
+                  .then(response => response.json())
+                  .then(result => {
+                     console.log(result.new_text) // Debug
+                     element.parentElement.querySelector("#tweetText").innerHTML = result.new_text
+                  });
 
-                      fetch('/edit/1', {
-                       method: 'POST',
-                        body: JSON.stringify({
-                          tweet: element.parentElement.querySelector("#foo").value
-                       })
-                    })
+               element.parentElement.querySelector("#edit").innerHTML = "Edit"
+            }
 
-                      .then(response => response.json())
-                      .then(result => {
-                        console.log(result.new_text) // Debug
-                        element.parentElement.querySelector("#tweetText").innerHTML = result.new_text
-                      });
-
-
-                  //    console.log(result.new_text);
-                      element.parentElement.querySelector("#edit").innerHTML = "Edit"
-                    }
-
-//                    
-
-                
-
-
-
-
-
-                    
-                    
-
-
-
-                   // document.querySelector("#tweetText").innerHTML = '<textarea></textarea>'
-                  //  document.querySelector("#edit").innerHTML = "Save"
-                  }
-
-                  else if (this.className === "btn btn-secondary float-left") {
-                    alert("You clicked like")
-                    alert(`Post number: ${this.parentElement.parentElement.dataset.id}`)
-                  }
-                }
-            });
+         } else if (this.className === "btn btn-secondary float-left") {
+            alert("You clicked like")
+            alert(`Post number: ${this.parentElement.parentElement.dataset.id}`)
+         }
+      }
+   });
 });
 
 </script>
