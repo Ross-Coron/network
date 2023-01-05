@@ -208,3 +208,31 @@ def edit(request, post_id):
     print(tweet)
 
     return JsonResponse({"message": "Tweet successfully edited", "new_text": new_text}, status=201)
+
+
+@csrf_exempt
+def like(request, post_id):
+
+    print("You are here 2")
+    print(post_id)
+
+ #   data = json.loads(request.body)
+ #   print(data)
+
+  #  status = data.get('like')
+  #  print(status)
+  #  print(type(status))
+
+    
+
+    user = User.objects.get(id=request.user.id)
+    tweet = Tweet.objects.get(id=post_id)
+
+    
+    
+    if user in tweet.like.all():
+        print("yes")
+    else:
+        print("no")
+
+    return JsonResponse({"message": "Like function"})
