@@ -14,11 +14,12 @@ class Tweet(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     tweetText = models.CharField(max_length=255)
     posted = models.DateTimeField(auto_now_add=True)
+    like = models.ManyToManyField(User, blank=True, related_name="likes")
 
     def __str__(self):
         return f"{self.author} tweeted: {self.tweetText}"
 
-class Like(models.Model):
-    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
-    likedBy = models.ManyToManyField(User, blank=True, related_name="foo")
+#class Like(models.Model):
+#    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
+#    likedBy = models.ManyToManyField(User, blank=True, related_name="foo")
      
