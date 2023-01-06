@@ -10,22 +10,21 @@ Debug: Signed in as <strong>{{ user.username }}</strong>
 
 {% for tweet in tweets %}
 
-{{ user.username.field.widget.input_type }}
-
-{% if user.username in tweet.like.all|stringformat:'s' %}
-User liked tweet
-{% else %}
-User has not liked this Tweet
-{% endif %}
+<!--{{ user.username.field.widget.input_type }} -->
 
 <div class="ms-2 card" style="width: 35rem" data-id="{{tweet.id}}";>
   <div class="card-body rounded">
    <h5 class="card-title" href="#"><a href="{% url 'profile' user_id=tweet.author.id%}"><b>@{{ tweet.author}}</b></h5></a>
    <h6 class="card-subtitle mb-2 text-muted">{{tweet.posted}}</h6>
    <p class="card-text" id="tweetText">{{tweet.tweetText}}</p>
-   <button class="btn btn-secondary float-left" id="foo">&hearts;&nbsp;<span id="bar">{{ tweet.like.all.count }}</span></button> 
    
-   {{tweet.like.all}}
+   {% if user.username in tweet.like.all|stringformat:'s' %}
+   <button class="btn btn-danger float-left" id="foo">&hearts;&nbsp;<span id="number">{{ tweet.like.all.count }}</span></button> 
+   {% else %}
+   <button class="btn btn-secondary float-left" id="foo">&hearts;&nbsp;<span id="number">{{ tweet.like.all.count }}</span></button> 
+   {% endif %}
+
+  <!-- {{tweet.like.all}} -->
 
    {% if user.username == tweet.author|stringformat:'s' %}
    <button class="btn btn-primary float-end booboo" id="edit">  Edit</button>
@@ -36,6 +35,8 @@ User has not liked this Tweet
 <br>
 
 {% endfor %}
+
+
 
 <script>
 
@@ -76,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
                element.parentElement.querySelector("#edit").innerHTML = "Edit"
             }
 
-         } else if (this.className === "btn btn-secondary float-left") {
+         } else if (this.className === "btn btn-secondary float-left" || this.className === "btn btn-danger float-left") {
             alert("You clicked like")
             alert(`Post number: ${this.parentElement.parentElement.dataset.id}`)
 
@@ -88,16 +89,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-                    //  body: JSON.stringify({like:true})
-                     
-             //     })
 
-           //       .then(response => response.json())
-            //      .then(result => {
-            //         console.log(result.new_text) // Debug
-            //         element.parentElement.querySelector("#tweetText").innerHTML = result.new_text
-            //      });
-            
+
+            like(element);
+
+
+
 
 
 
@@ -105,6 +102,27 @@ document.addEventListener('DOMContentLoaded', function() {
       }
    });
 });
+
+
+ function like(tweet) {
+
+      alert(tweet)
+  
+
+    let likes = tweet.querySelector("#number").innerHTML
+      
+   //   let heart = document.querySelector("#foo");
+
+      if (tweet.classList.contains("btn-secondary")) {
+         tweet.className = "btn btn-danger float-left";
+         likes++
+         tweet.querySelector("#number").innerHTML = likes
+      } else {
+         tweet.className = "btn btn-secondary float-left";
+         likes--
+         tweet.querySelector("#number").innerHTML = likes
+      }
+   }
 
 </script>
 

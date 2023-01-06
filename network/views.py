@@ -231,8 +231,13 @@ def like(request, post_id):
     
     
     if user in tweet.like.all():
-        print("yes")
+        print("User already likes this Tweet - unliking now")
+
+        tweet.like.remove(user)
+
+
     else:
-        print("no")
+        print("User does not yet like this Tweet - liking now")
+        tweet.like.add(user)
 
     return JsonResponse({"message": "Like function"})
