@@ -2,16 +2,25 @@
 
 {% block body %}
 
-Signed in as <strong>{{ user.username }}</strong>
 
-<form action="{% url 'tweet' %}" method="POST">
+
+
+
+
+
+<div class="ms-2 card" style="width: 35rem">
+     <div class="card-body rounded">
+     <h6 class="card-title"></h6>
+     <form action="{% url 'tweet' %}" method="POST">
      {% csrf_token %}
   <div class="form-group">
-    <label for="exampleFormControlTextarea1">Write Tweet</label>
-    <textarea class="form-control" name="exampleFormControlTextarea1" rows="3"></textarea>
+    
+    <textarea class="form-control" name="exampleFormControlTextarea1" rows="3" placeholder="What's happening?"></textarea>
   </div>
-  <input type="submit" value="Tweet">
+  <input type="submit" class="btn btn-primary float-end mt-3" value="Bleet!">
 </form>
+    
+</div>
 
 {% for tweet in tweets %}
      <li>{{tweet}}</li>

@@ -83,7 +83,8 @@ def profile(request, user_id):
 
 
     return render(request, "network/profile.html", {
-        "x": profile.username,
+        "viewed_profile": profile.username,
+        "viewed_profile_id": user_id,
         "tweets": tweets,
         "following": profile.following.all().count(),
         "followedBy": Follow.objects.filter(user=user_id).count(),
@@ -171,15 +172,15 @@ def test(request, user_id):
     print("Current user:", request.user.id)
     
     # Temp
-    following = User.objects.get(id=request.user.id).following.filter(user=3).get()
+   # following = User.objects.get(id=request.user.id).following.filter(user=user_id).get()
 
 
-    profile = User.objects.get(id=request.user.id)
+    #profile = User.objects.get(id=request.user.id)
 
-    profile.following.remove(following)
+    #profile.following.remove(following)
 
 
-    print(following.user)
+    #print(following.user)
 
     #follow = User.objects.filter(username=request.user).following
     

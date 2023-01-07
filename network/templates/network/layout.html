@@ -20,6 +20,11 @@
             <div>
               <ul class="navbar-nav mr-auto">
                 <!-- Display NavBar options based on signed in status -->
+                
+                <li class="nav-item">
+                  <a class="btn btn-primary" href="{% url 'tweet' %}" role="button"> New Bleet</a>
+                </li>
+
                 {% if user.is_authenticated %}
                     <li class="nav-item">
 
@@ -27,6 +32,7 @@
                         <a class="nav-link" href="{% url 'profile' user_id=user.id%}"><strong>{{ user.username }}</strong></a>
                     </li>
                 {% endif %}
+                
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'allPosts' %}">All Posts</a>
                 </li>
@@ -50,6 +56,9 @@
           </nav>
 
         <div class="body">
+
+        
+
             {% block body %}
             {% endblock %}
         </div>

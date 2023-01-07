@@ -1,36 +1,36 @@
-{% extends "network/layout.html" %}
+   {% extends "network/layout.html" %}
 
-{% block body %}
+   {% block body %}
 
-<br>
-Debug: Signed in as <strong>{{ user.username }}</strong>
+   <br>
+   Debug: Signed in as <strong>{{ user.username }}</strong>
 
-<br>
-<br>
+   <br>
+   <br>
 
-{% for tweet in tweets %}
+   {% for tweet in tweets %}
 
-<!--{{ user.username.field.widget.input_type }} -->
+   <!--{{ user.username.field.widget.input_type }} -->
 
-<div class="ms-2 card" style="width: 35rem" data-id="{{tweet.id}}";>
-  <div class="card-body rounded">
-   <h5 class="card-title" href="#"><a href="{% url 'profile' user_id=tweet.author.id%}"><b>@{{ tweet.author}}</b></h5></a>
-   <h6 class="card-subtitle mb-2 text-muted">{{tweet.posted}}</h6>
-   <p class="card-text" id="tweetText">{{tweet.tweetText}}</p>
-   
-   {% if user.username in tweet.like.all|stringformat:'s' %}
-   <button class="btn btn-danger float-left" id="foo">&hearts;&nbsp;<span id="number">{{ tweet.like.all.count }}</span></button> 
-   {% else %}
-   <button class="btn btn-secondary float-left" id="foo">&hearts;&nbsp;<span id="number">{{ tweet.like.all.count }}</span></button> 
-   {% endif %}
+   <div class="ms-2 card" style="width: 35rem" data-id="{{tweet.id}}";>
+     <div class="card-body rounded">
+      <h5 class="card-title" href="#"><a href="{% url 'profile' user_id=tweet.author.id%}"><b>@{{ tweet.author}}</b></h5></a>
+      <h6 class="card-subtitle mb-2 text-muted">{{tweet.posted}}</h6>
+      <p class="card-text" id="tweetText">{{tweet.tweetText}}</p>
+      
+      {% if user.username in tweet.like.all|stringformat:'s' %}
+      <button class="btn btn-danger float-left" id="foo">&hearts;&nbsp;<span id="number">{{ tweet.like.all.count }}</span></button> 
+      {% else %}
+      <button class="btn btn-secondary float-left" id="foo">&hearts;&nbsp;<span id="number">{{ tweet.like.all.count }}</span></button> 
+      {% endif %}
 
-  <!-- {{tweet.like.all}} -->
+      <!-- {{tweet.like.all}} -->
 
-   {% if user.username == tweet.author|stringformat:'s' %}
-   <button class="btn btn-primary float-end booboo" id="edit">  Edit</button>
-   {% endif %}
+      {% if user.username == tweet.author|stringformat:'s' %}
+      <button class="btn btn-primary float-end booboo" id="edit">  Edit</button>
+      {% endif %}
 
- </div>
+   </div>
 </div>
 <br>
 
@@ -40,28 +40,28 @@ Debug: Signed in as <strong>{{ user.username }}</strong>
 
 <script>
 
-document.addEventListener('DOMContentLoaded', function() {
-   document.querySelectorAll('button').forEach(button => {
-      button.onclick = function() {
+   document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('button').forEach(button => {
+         button.onclick = function() {
 
-         if (event.target.className === "btn btn-primary float-end booboo") {
+            if (event.target.className === "btn btn-primary float-end booboo") {
             // alert("You clicked edit")
             // alert(`Post number: ${this.parentElement.parentElement.dataset.id}`)
 
-            const element = event.target
-            const id = element.parentElement.parentElement.dataset.id
+               const element = event.target
+               const id = element.parentElement.parentElement.dataset.id
 
           //  const id = element.parentElement.querySelector('[data-id]');
          //   alert(id)
 
-            if (element.parentElement.querySelector("#edit").innerText === "Edit") {
-               element.parentElement.querySelector("#tweetText").innerHTML = '<textarea id="foo"></textarea>'
-               element.parentElement.querySelector("#edit").innerHTML = "Save"
-            
-            } else if (element.parentElement.querySelector("#edit").innerText === "Save") {
-               alert(element.parentElement.querySelector("#foo").value);
+               if (element.parentElement.querySelector("#edit").innerText === "Edit") {
+                  element.parentElement.querySelector("#tweetText").innerHTML = '<textarea id="foo"></textarea>'
+                  element.parentElement.querySelector("#edit").innerHTML = "Save"
+                  
+               } else if (element.parentElement.querySelector("#edit").innerText === "Save") {
+                  alert(element.parentElement.querySelector("#foo").value);
 
-               fetch(`/edit/${id}`, {
+                  fetch(`/edit/${id}`, {
                      method: 'POST',
                      body: JSON.stringify({
                         tweet: element.parentElement.querySelector("#foo").value
@@ -74,42 +74,31 @@ document.addEventListener('DOMContentLoaded', function() {
                      element.parentElement.querySelector("#tweetText").innerHTML = result.new_text
                   });
 
-               element.parentElement.querySelector("#edit").innerHTML = "Edit"
+                  element.parentElement.querySelector("#edit").innerHTML = "Edit"
+               }
+
+            } else if (this.className === "btn btn-secondary float-left" || this.className === "btn btn-danger float-left") {
+               alert("You clicked like")
+               alert(`Post number: ${this.parentElement.parentElement.dataset.id}`)
+
+               const element = event.target
+               const id = element.parentElement.parentElement.dataset.id
+
+               fetch(`/like/${id}`), {
+                  method: 'POST'}
+                  like(element);
+               }
             }
-
-         } else if (this.className === "btn btn-secondary float-left" || this.className === "btn btn-danger float-left") {
-            alert("You clicked like")
-            alert(`Post number: ${this.parentElement.parentElement.dataset.id}`)
-
-            const element = event.target
-            const id = element.parentElement.parentElement.dataset.id
-
-            fetch(`/like/${id}`), {
-                     method: 'POST'}
-
-
-
-
-
-            like(element);
-
-
-
-
-
-
-         }
-      }
+         });
    });
-});
 
 
- function like(tweet) {
+   function like(tweet) {
 
-      alert(tweet)
-  
+    //  alert(tweet)
+      
 
-    let likes = tweet.querySelector("#number").innerHTML
+      let likes = tweet.querySelector("#number").innerHTML
       
    //   let heart = document.querySelector("#foo");
 
@@ -126,4 +115,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
 
-  {% endblock %}
+{% endblock %}

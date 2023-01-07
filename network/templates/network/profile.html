@@ -2,59 +2,46 @@
 
 {% block body %}
 
+Debug:
+<ul>
+  <li>Signed in as <strong>{{ user.username }}</strong>
+  <li>Following: {{ following }} / Followers: {{ followedBy }}
+  <li>Signed in user is following this profile? {{ following_status }}
+</ul>
 
 <br>
-Debug | Signed in as <strong>{{ user.username }}</strong>
-<br>
-Debug | Following: {{ following }} / Followers: {{ followedBy }}
-<br>
-Debug | User is following? {{ following_status }}
+{% if user.username == viewed_profile %}
+<button type="button" onclick="followUnfollow()"disabled>Follow</button>
 
-
-
-<br>
-
+{% else %}
 {% if following_status == True %} 
-
 <button type="button" onclick="followUnfollow()">Unfollow</button>
-
-{% elif following_status == False %} 
-
+{% elif following_status == False %}
 <button type="button" onclick="followUnfollow()">Follow</button>
-
 {% endif %}
-
+{% endif %}
+<br>
 <br>
 
-
-<br>
-
-<h1>Profile: {{x}}</h1>
+<h1 data-id="{{viewed_profile_id}}">{{viewed_profile}}</h1>
 
 <table class="table">
   <thead>
+    <tr>
+      <th>User</th>
+      <th>Date</th>
+      <th>Tweet</th>
+      <th>ID</th>
+    </tr>
+  </thead>
+  {% for tweet in tweets %}
   <tr>
-    <th>User</th>
-    <th>Date</th>
-    <th>Tweet</th>
-    <th>ID</th>
-</tr>
-</thead>
-
-{% for tweet in tweets %}
-
-
-
-<tr>
-  <td>{{tweet.author}}</td>
-  <td>{{tweet.posted}}</td>
-  <td>{{tweet.tweetText}}</td>
-  <td>{{tweet.id}}</td>
-
-
+    <td>{{tweet.author}}</td>
+    <td>{{tweet.posted}}</td>
+    <td>{{tweet.tweetText}}</td>
+    <td>{{tweet.id}}</td>
   </tr>
   {% endfor %}
-
 </table>
 
 <script>
@@ -62,31 +49,33 @@ Debug | User is following? {{ following_status }}
 
 
 
-function followUnfollow() {
-  
-  let id = 1;
 
-  if (document.querySelector('button').innerHTML == "Follow") {
-    alert("Follow")
-    var message = "test"
-    
-  fetch(`/test/${id}`)
+  function followUnfollow() {
+
+    let x = document.querySelector('h1').dataset.id
+    alert(x)
+
+    if (document.querySelector('button').innerHTML == "Follow") {
+      alert("Follow")
+
+      fetch(`/test/${user_id}`)
       .then(response => response.json())
       .then(x => {
         console.log(x); 
+      })
 
-        alert(x.message)
-  })
+    }
+    else if (document.querySelector('button').innerHTML == "Unfollow") {
+      alert("Unfollow")
 
+      fetch(`/test/${user_id}`)
+      .then(response => response.json())
+      .then(x => {
+        console.log(x); 
+      })
 
-    
-}
-
-  else if (document.querySelector('button').innerHTML == "Unfollow") {
-    alert("Unfollow")
-  }
-
-};
+    }
+  };
 
   
 
