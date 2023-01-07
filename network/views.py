@@ -168,12 +168,13 @@ def register(request):
 def test(request, user_id):
     
     print(user_id)
-
     print("Current user:", request.user.id)
     
-    # Temp
-   # following = User.objects.get(id=request.user.id).following.filter(user=user_id).get()
+    following = User.objects.get(id=request.user.id).following.filter(user=user_id).all()
+    print(following)
 
+    for x in following:
+        print(x.user)
 
     #profile = User.objects.get(id=request.user.id)
 

@@ -58,7 +58,7 @@ Debug:
     if (document.querySelector('button').innerHTML == "Follow") {
       alert("Follow")
 
-      fetch(`/test/${user_id}`)
+      fetch(`/test/${x}`)
       .then(response => response.json())
       .then(x => {
         console.log(x); 
@@ -68,7 +68,7 @@ Debug:
     else if (document.querySelector('button').innerHTML == "Unfollow") {
       alert("Unfollow")
 
-      fetch(`/test/${user_id}`)
+      fetch(`/test/${x}`)
       .then(response => response.json())
       .then(x => {
         console.log(x); 
