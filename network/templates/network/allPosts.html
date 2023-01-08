@@ -1,159 +1,144 @@
-   {% extends "network/layout.html" %}
+	{% extends "network/layout.html" %}
+	{% block body %}
 
-   {% block body %}
+	<!-- Show paginated posts -->
+	{% for tweet in page_obj %}
+	<br>
+	<div class="ms-2 card" style="width: 35rem" data-id="{{tweet.id}}";>
+		<div class="card-body rounded">
+			<h5 class="card-title"><a href="{% url 'profile' user_id=tweet.author.id%}"><b>@{{ tweet.author}}</b></h5></a>
+			<h6 class="card-subtitle mb-2 text-muted">{{tweet.posted}}</h6>
+			<p class="card-text" id="tweetText">{{tweet.tweetText}}</p>
 
- 
+			<!-- If user likes post, show like button as red; otherwise grey  -->
+			{% if user.username in tweet.like.all|stringformat:'s' %}
+			<button class="btn btn-danger float-left" id="foo">&hearts;&nbsp;<span id="number">{{ tweet.like.all.count }}</span></button> 
+			{% else %}
+			<button class="btn btn-secondary float-left" id="foo">&hearts;&nbsp;<span id="number">{{ tweet.like.all.count }}</span></button> 
+			{% endif %}
 
-   <br>
-   Debug: Signed in as <strong>{{ user.username }}</strong>
+			<!-- If user is author of post, show edit button -->
+			{% if user.username == tweet.author|stringformat:'s' %}
+			<button class="btn btn-primary float-end edit" id="edit">  Edit</button>
+			{% endif %}
+		</div>
+	</div>
+	{% endfor %}
 
-   <br>
-   <br>
-
-   {% for tweet in page_obj %}
-
-   <!--{{ user.username.field.widget.input_type }} -->
-
-   <div class="ms-2 card" style="width: 35rem" data-id="{{tweet.id}}";>
-     <div class="card-body rounded">
-      <h5 class="card-title" href="#"><a href="{% url 'profile' user_id=tweet.author.id%}"><b>@{{ tweet.author}}</b></h5></a>
-      <h6 class="card-subtitle mb-2 text-muted">{{tweet.posted}}</h6>
-      <p class="card-text" id="tweetText">{{tweet.tweetText}}</p>
-      
-      {% if user.username in tweet.like.all|stringformat:'s' %}
-      <button class="btn btn-danger float-left" id="foo">&hearts;&nbsp;<span id="number">{{ tweet.like.all.count }}</span></button> 
-      {% else %}
-      <button class="btn btn-secondary float-left" id="foo">&hearts;&nbsp;<span id="number">{{ tweet.like.all.count }}</span></button> 
-      {% endif %}
-
-      <!-- {{tweet.like.all}} -->
-
-      {% if user.username == tweet.author|stringformat:'s' %}
-      <button class="btn btn-primary float-end booboo" id="edit">  Edit</button>
-      {% endif %}
-
-   </div>
-</div>
-<br>
-
-
-
-{% endfor %}
-
- <!--Pagination-->
-    <nav aria-label="Page navigation example">
-      <ul class="pagination justify-content-center">
-        {% if page_obj.has_previous %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-          </li>
-        {% else %}
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Previous</a>
-          </li>
-        {% endif %}
-        {% for i in page_obj.paginator.page_range %}
-          {% if page_obj.number == i %}
-            <li class="page-item active" aria-current="page">
-              <span class="page-link">
-                {{ i }}
-                <span class="sr-only"></span>
-              </span>
-            </li>
-          {% else %}
-            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-          {% endif %}
-        {% endfor %}
-        {% if page_obj.has_next %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-          </li>
-        {% else %}
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="True">Next</a>
-          </li>
-        {% endif %}
-      </ul>
-    </nav>
-    <!--end of Pagination-->
+	<!-- Pagination navigation -->
+	<nav aria-label="Page navigation example">
+		<ul class="pagination justify-content-center">
+			{% if page_obj.has_previous %}
+			<li class="page-item">
+				<a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+			</li>
+			{% else %}
+			<li class="page-item disabled">
+				<a class="page-link" href="#" tabindex="-1" aria-disabled="True">Previous</a>
+			</li>
+			{% endif %}
+			{% for i in page_obj.paginator.page_range %}
+			{% if page_obj.number == i %}
+			<li class="page-item active" aria-current="page">
+				<span class="page-link">
+					{{ i }}
+					<span class="sr-only"></span>
+				</span>
+			</li>
+			{% else %}
+			<li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+			{% endif %}
+			{% endfor %}
+			{% if page_obj.has_next %}
+			<li class="page-item">
+				<a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+			</li>
+			{% else %}
+			<li class="page-item disabled">
+				<a class="page-link" href="#" tabindex="-1" aria-disabled="True">Next</a>
+			</li>
+			{% endif %}
+		</ul>
+	</nav>
 
 
+	<script>
 
-<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			document.querySelectorAll('button').forEach(button => {
+				button.onclick = function() {
 
-   document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('button').forEach(button => {
-         button.onclick = function() {
+				// Detects if edit button clicked
+					if (event.target.className === "btn btn-primary float-end edit") {
+						console.log(`Edit button clicked. Post number: ${this.parentElement.parentElement.dataset.id}`)
 
-            if (event.target.className === "btn btn-primary float-end booboo") {
-            // alert("You clicked edit")
-            // alert(`Post number: ${this.parentElement.parentElement.dataset.id}`)
+						const element = event.target
+						const id = element.parentElement.parentElement.dataset.id
+						const originalText = element.parentElement.querySelector("#tweetText").innerText
+						
+						// If edit button reads 'edit', create text area and change button text to 'save'
+						if (element.parentElement.querySelector("#edit").innerText === "Edit") {
+							element.parentElement.querySelector("#tweetText").innerHTML = '<textarea style="width: 32rem" id="edit_text"></textarea>'
+							element.parentElement.querySelector("#edit_text").placeholder = originalText
 
-               const element = event.target
-               const id = element.parentElement.parentElement.dataset.id
+							element.parentElement.querySelector("#edit").innerHTML = "Save"
 
-          //  const id = element.parentElement.querySelector('[data-id]');
-         //   alert(id)
+						// If edit button reads 'save', update post
+						} else if (element.parentElement.querySelector("#edit").innerText === "Save") {
+							
+							fetch(`/edit/${id}`, {
+								method: 'POST',
+								body: JSON.stringify({
+									tweet: element.parentElement.querySelector("#edit_text").value
+								})
+							})
 
-               if (element.parentElement.querySelector("#edit").innerText === "Edit") {
-                  element.parentElement.querySelector("#tweetText").innerHTML = '<textarea id="foo"></textarea>'
-                  element.parentElement.querySelector("#edit").innerHTML = "Save"
-                  
-               } else if (element.parentElement.querySelector("#edit").innerText === "Save") {
-                  alert(element.parentElement.querySelector("#foo").value);
+							.then(response => response.json())
+							.then(result => {
+								console.log(`Edited text: ${result.new_text}`)
 
-                  fetch(`/edit/${id}`, {
-                     method: 'POST',
-                     body: JSON.stringify({
-                        tweet: element.parentElement.querySelector("#foo").value
-                     })
-                  })
+								// Update displayed text and revert edit button text to 'edit'
+								element.parentElement.querySelector("#tweetText").innerHTML = result.new_text
+								element.parentElement.querySelector("#edit").innerHTML = "Edit"
+							});	
+						}
 
-                  .then(response => response.json())
-                  .then(result => {
-                     console.log(result.new_text) // Debug
-                     element.parentElement.querySelector("#tweetText").innerHTML = result.new_text
-                  });
+					// Detects if like button clicked
+					} else if (this.className === "btn btn-secondary float-left" || this.className === "btn btn-danger float-left") {
+						console.log(`Like button clicked. Post number: ${this.parentElement.parentElement.dataset.id}`)
 
-                  element.parentElement.querySelector("#edit").innerHTML = "Edit"
-               }
+						const element = event.target
+						const id = element.parentElement.parentElement.dataset.id
 
-            } else if (this.className === "btn btn-secondary float-left" || this.className === "btn btn-danger float-left") {
-               alert("You clicked like")
-               alert(`Post number: ${this.parentElement.parentElement.dataset.id}`)
-
-               const element = event.target
-               const id = element.parentElement.parentElement.dataset.id
-
-               fetch(`/like/${id}`), {
-                  method: 'POST'}
-                  like(element);
-               }
-            }
-         });
-   });
+						// Update database then HTML
+						fetch(`/like/${id}`), {
+							method: 'POST'}
+							like(element);
+						}
+					}
+				});
+		});
 
 
-   function like(tweet) {
+		function like(tweet) {
 
-    //  alert(tweet)
-      
+			// Get current number of likes
+			var likes = tweet.querySelector("#number").innerHTML
 
-      let likes = tweet.querySelector("#number").innerHTML
-      
-   //   let heart = document.querySelector("#foo");
+			// Increment / deincrement number of likes and change colour of button
+			if (tweet.classList.contains("btn-secondary")) {
+				
+				tweet.className = "btn btn-danger float-left";
+				likes++
+				tweet.querySelector("#number").innerHTML = likes
 
-      if (tweet.classList.contains("btn-secondary")) {
-         tweet.className = "btn btn-danger float-left";
-         likes++
-         tweet.querySelector("#number").innerHTML = likes
-      } else {
-         tweet.className = "btn btn-secondary float-left";
-         likes--
-         tweet.querySelector("#number").innerHTML = likes
-      }
-   }
+			} else {
 
-</script>
+				tweet.className = "btn btn-secondary float-left";
+				likes--
+				tweet.querySelector("#number").innerHTML = likes
+			}
+		}
 
-{% endblock %}
+	</script>
+	{% endblock %}
