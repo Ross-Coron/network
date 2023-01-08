@@ -11,13 +11,13 @@ Debug:
 
 <br>
 {% if user.username == viewed_profile %}
-<button type="button" onclick="followUnfollow()"disabled>Follow</button>
+<button type="button" class="btn btn-primary" onclick="follow()"disabled>Follow</button>
 
 {% else %}
 {% if following_status == True %} 
-<button type="button" onclick="followUnfollow()">Unfollow</button>
+<button type="button" class="btn btn-secondary" onclick="follow()">Unfollow</button>
 {% elif following_status == False %}
-<button type="button" onclick="followUnfollow()">Follow</button>
+<button type="button" class="btn btn-primary" onclick="follow()">Follow</button>
 {% endif %}
 {% endif %}
 <br>
@@ -44,36 +44,39 @@ Debug:
   {% endfor %}
 </table>
 
+
 <script>
 
+  function follow() {
 
+    const button = document.querySelector('button')
+    let post = document.querySelector('h1').dataset.id
+    console.log(`Bleet number ${post}`)
 
+    if (button.innerHTML == "Follow") {
+      console.log("Follow button clicked")
 
-
-  function followUnfollow() {
-
-    let x = document.querySelector('h1').dataset.id
-    alert(x)
-
-    if (document.querySelector('button').innerHTML == "Follow") {
-      alert("Follow")
-
-      fetch(`/test/${x}`)
+      fetch(`/follow/${post}`)
       .then(response => response.json())
-      .then(x => {
-        console.log(x); 
+      .then(data => {
+        console.log(data);
+
+      button.innerHTML = "Unfollow"
+
       })
 
     }
-    else if (document.querySelector('button').innerHTML == "Unfollow") {
-      alert("Unfollow")
+    else if (button.innerHTML == "Unfollow") {
+      console.log("Unfollow button clicked")
 
-      fetch(`/test/${x}`)
+      fetch(`/follow/${post}`)
       .then(response => response.json())
-      .then(x => {
-        console.log(x); 
-      })
+      .then(data => {
+        console.log(data); 
 
+      button.innerHTML = "Follow"
+        
+      })
     }
   };
 

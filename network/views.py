@@ -165,28 +165,34 @@ def register(request):
 
 
 # Currently here. API route to follow / unfollow user.
-def test(request, user_id):
+def follow(request, user_id):
     
-    print(user_id)
-    print("Current user:", request.user.id)
+    # Get logged in user
+    user = User.objects.get(pk=request.user.id)
+    print("Debug:", user, type(user), user.following.all())
     
-    following = User.objects.get(id=request.user.id).following.filter(user=user_id).all()
-    print(following)
+    # Get profile being viewed
+    profile = User.objects.get(pk=user_id)
+    print("Debug:", profile, type(profile), profile.following.all())
 
-    for x in following:
-        print(x.user)
+    # Check if user already follows profile
+    if Follow.objects.filter(user=profile, followed_by=user).exists():        
+      
+        print("Debug: user currently following profile")
+        instance = Follow.objects.filter(user=profile, followed_by=user).get()
 
-    #profile = User.objects.get(id=request.user.id)
+        user.following.remove(instance)
+        print("Debug: user no longer following profile")
 
-    #profile.following.remove(following)
+    else:
+        
+        print("Debug: user NOT currently following profile")
+        instance = Follow.objects.get(user=profile)
+        
+        instance.followed_by.add(user)
+        print("Debug: user now following profile")
 
-
-    #print(following.user)
-
-    #follow = User.objects.filter(username=request.user).following
-    
-
-    return JsonResponse({"message": "Success!"}, status=201)
+    return JsonResponse({"message": "Follow function executed"}, status=201)
 
 
 @csrf_exempt
@@ -215,31 +221,17 @@ def edit(request, post_id):
 @csrf_exempt
 def like(request, post_id):
 
-    print("You are here 2")
-    print(post_id)
-
- #   data = json.loads(request.body)
- #   print(data)
-
-  #  status = data.get('like')
-  #  print(status)
-  #  print(type(status))
-
-    
+    # Debug: print("Debug: like route")
 
     user = User.objects.get(id=request.user.id)
     tweet = Tweet.objects.get(id=post_id)
 
-    
-    
     if user in tweet.like.all():
-        print("User already likes this Tweet - unliking now")
-
+        print("Debug: user already likes this Bleet - unliking now")
         tweet.like.remove(user)
 
-
     else:
-        print("User does not yet like this Tweet - liking now")
+        print("Debug: user does not yet like this Bleet - liking now")
         tweet.like.add(user)
 
-    return JsonResponse({"message": "Like function"})
+    return JsonResponse({"message": "Like function executed"})
