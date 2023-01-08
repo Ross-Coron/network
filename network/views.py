@@ -4,6 +4,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+# For paginator
+from django.core.paginator import Paginator
+
 # from mail
 import json
 from django.http import JsonResponse
@@ -41,11 +44,16 @@ def tweet(request):
 def allPosts(request):
 
     tweets = Tweet.objects.all()
+    paginator = Paginator(tweets, 3)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     print(tweets)
 
-
     return render(request, "network/allPosts.html", {
-        "tweets": tweets
+        "page_obj": page_obj
+       # "tweets": tweets
     })
 
 
