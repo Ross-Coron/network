@@ -2,50 +2,47 @@
 
 {% block body %}
 
-Debug:
+<!-- Debug:
 <ul>
-  <li>Signed in as <strong>{{ user.username }}</strong>
+  <li>Signed in as: {{ user.username }}</strong>
   <li>Following: {{ following }} / Followers: {{ followedBy }}
   <li>Signed in user is following this profile? {{ following_status }}
-</ul>
+  </ul> -->
 
-<br>
-{% if user.username == viewed_profile %}
-<button type="button" class="btn btn-primary" onclick="follow()"disabled>Follow</button>
+  <br>
+  <div class="inline">
 
-{% else %}
-{% if following_status == True %} 
-<button type="button" class="btn btn-secondary" onclick="follow()">Unfollow</button>
-{% elif following_status == False %}
-<button type="button" class="btn btn-primary" onclick="follow()">Follow</button>
-{% endif %}
-{% endif %}
-<br>
-<br>
+    <h2 data-id="{{viewed_profile_id}}">User: {{viewed_profile}}</h2>
 
-<h1 data-id="{{viewed_profile_id}}">{{viewed_profile}}</h1>
+    {% if user.username == viewed_profile %}
+    <button type="button" class="btn btn-primary ms-4" onclick="follow()"disabled>Follow</button>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Date</th>
-      <th>Tweet</th>
-      <th>ID</th>
-    </tr>
-  </thead>
+    {% else %}
+    {% if following_status == True %} 
+    <button type="button" class="btn btn-secondary ms-4" onclick="follow()">Unfollow</button>
+    {% elif following_status == False %}
+    <button type="button" class="btn btn-primary ms-4" onclick="follow()">Follow</button>
+    {% endif %}
+    {% endif %}
+
+  </div>
+
   {% for tweet in tweets %}
-  <tr>
-    <td>{{tweet.author}}</td>
-    <td>{{tweet.posted}}</td>
-    <td>{{tweet.tweetText}}</td>
-    <td>{{tweet.id}}</td>
-  </tr>
-  {% endfor %}
-</table>
+  <br>
+  <div class="ms-2 card" style="width: 35rem" data-id="{{tweet.id}}";>
+    <div class="card-body rounded">
+     <h5 class="card-title" href="#"><a href="{% url 'profile' user_id=tweet.author.id%}"><b>@{{ tweet.author}}</b></h5></a>
+     <h6 class="card-subtitle mb-2 text-muted">{{tweet.posted}}</h6>
+     <p class="card-text">{{tweet.tweetText}}</p>
+     <button class="btn btn-secondary float-left" id="foo">&hearts;&nbsp;<span id="bar">0</span></button> 
+     <button class="btn btn-primary float-end booboo">Edit</button>
+   </div>
+ </div>
+
+ {% endfor %}
 
 
-<script>
+ <script>
 
   function follow() {
 
@@ -61,7 +58,7 @@ Debug:
       .then(data => {
         console.log(data);
 
-      button.innerHTML = "Unfollow"
+        button.innerHTML = "Unfollow"
 
       })
 
@@ -74,25 +71,12 @@ Debug:
       .then(data => {
         console.log(data); 
 
-      button.innerHTML = "Follow"
+        button.innerHTML = "Follow"
         
       })
     }
   };
-
   
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 
 

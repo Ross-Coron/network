@@ -3,6 +3,12 @@
   border: 2px solid dimgrey;
 }
 
+.inline {
+  display: flex;
+  align-items: center; /* Vertical align the elements to the center */
+
+}
+
 table { 
     table-layout:fixed;
 }

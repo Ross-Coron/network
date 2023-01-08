@@ -19,13 +19,14 @@
 
             <div>
               <ul class="navbar-nav mr-auto">
-                <!-- Display NavBar options based on signed in status -->
                 
+                <!-- Display NavBar options based on signed in status -->
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                   <a class="btn btn-primary" href="{% url 'tweet' %}" role="button"> New Bleet</a>
                 </li>
 
-                {% if user.is_authenticated %}
+                
                     <li class="nav-item">
 
                         <!-- TODO Insert link --> 

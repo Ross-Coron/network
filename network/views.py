@@ -102,21 +102,21 @@ def profile(request, user_id):
 
 def following(request):
 
- 
-    # Gets all users following logged in user
+    # Gets all profiles user follows
     usersFollowed = request.user.following.all()
   
-    # Gets IDs of users to filter with
+    # Make list of IDs
     usersFollowedIds = []
     for x in usersFollowed:
         usersFollowedIds.append(x.user.id)
 
-    print(usersFollowedIds)
+    print("Debug: User follows: ", usersFollowedIds)
     
-    #Filter Tweets by list of IDs
+    # Filter Tweets by list of IDs
     tweets = Tweet.objects.filter(author__in=usersFollowedIds).order_by('-posted')
     
-    return render(request, "network/allPosts.html", {
+    # Render posts. TODO: pagination
+    return render(request, "network/following.html", {
         "tweets": tweets
     })
     
