@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-# View in admin interface
-from .models import User, Follow, Tweet #, Like
+# To view models in admin interface
+from .models import User, Follow, Tweet
 
 # Show DateTimeField (typically hidden from admin page)
 class TweetAdmin(admin.ModelAdmin):
