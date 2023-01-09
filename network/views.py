@@ -3,70 +3,67 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
-# For paginator
-from django.core.paginator import Paginator
-
-# from mail
-import json
+from django.core.paginator import Paginator   # Pagination functionality   
+import json # JSON functionality
 from django.http import JsonResponse
-
-from django.views.decorators.csrf import csrf_exempt
-
-# From Mail. 
-from django.http import JsonResponse
-
-# Import all models
-from .models import *
+from django.views.decorators.csrf import csrf_exempt   # CSRF exemption
+from .models import *   # Import all models
 
 
+# Index route (default)
 def index(request):
     return render(request, "network/index.html")
 
 
-# Write Tweet
+# Create new post
 def tweet(request):
 
     if request.method == "POST":
+        
+        # Get content of textarea
         form_contents = request.POST["exampleFormControlTextarea1"]
-        print(form_contents)
+        # print("Debug | post text:", form_contents)
 
+        # Add post to database
         newTweet = Tweet(author=request.user, tweetText=form_contents)
         newTweet.save()
 
+        # Redirect to all posts page
         return HttpResponseRedirect(reverse("allPosts"))
 
     else:
         return render(request, "network/tweet.html")
 
 
-# View all Tweets
+# View all posts
 def allPosts(request):
 
+    # Get all posts and paginate (10 posts per page)
     tweets = Tweet.objects.all()
-    paginator = Paginator(tweets, 3)
+    paginator = Paginator(tweets, 10)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    print(tweets)
+    # print("Debug | all tweets:",tweets)
 
     return render(request, "network/allPosts.html", {
         "page_obj": page_obj
-       # "tweets": tweets
     })
 
 
-# View a user's profile and their Tweets
+# View user profile and their posts
 def profile(request, user_id):
 
-    # BETTER
+    # Get profile
     profile = User.objects.get(id=user_id)
+
+    # Check if user follows profile
     if Follow.objects.filter(user=user_id, followed_by=request.user).exists():
-        print("ya")
+        # print("Debug | user is following profile")
         following_status = True
     else:
-        print("na")
+        # print("Debug | user is NOT following profile")
         following_status = False
    
     # Get list of IDs of people the logged in user follows (Follow objects)
@@ -74,22 +71,12 @@ def profile(request, user_id):
     following = request.user.following.all()
     for x in following:
         followList.append(x.user.id)
-
-    # Get user of profile being viewed (User object)
-    profile = User.objects.get(id=user_id)
     
-    
-    if profile.id in followList:
-        print("You are following")
-    else:
-        print("You are NOT following")
-
-    
-    # Returns in reverse chronolical order
+    # Gets posts from profile in reverse chronolical order
     tweets = Tweet.objects.filter(author=user_id).order_by('-posted')
-    print(tweets)
+    # print("Debug | profile's posts: ",tweets)
 
-
+    # Render HTML page passing in necessary variables
     return render(request, "network/profile.html", {
         "viewed_profile": profile.username,
         "viewed_profile_id": user_id,
@@ -100,6 +87,7 @@ def profile(request, user_id):
     })
 
 
+# Displays posts from profiles user is following
 def following(request):
 
     # Gets all profiles user follows
@@ -110,18 +98,17 @@ def following(request):
     for x in usersFollowed:
         usersFollowedIds.append(x.user.id)
 
-    print("Debug: User follows: ", usersFollowedIds)
+    # print("Debug | User follows: ", usersFollowedIds)
     
-    # Filter Tweets by list of IDs
+    # ets posts from profiles in reverse chronolical order
     tweets = Tweet.objects.filter(author__in=usersFollowedIds).order_by('-posted')
     
-    # Render posts. TODO: pagination
     return render(request, "network/following.html", {
         "tweets": tweets
     })
     
 
-# Log in, out, register
+# Log user in
 def login_view(request):
     if request.method == "POST":
 
@@ -141,10 +128,14 @@ def login_view(request):
     else:
         return render(request, "network/login.html")
 
+
+# Log user out
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
+
+# Register a new user
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -172,10 +163,10 @@ def register(request):
         return render(request, "network/register.html")
 
 
-# Currently here. API route to follow / unfollow user.
+# API function: follow / unfollow profile
 def follow(request, user_id):
     
-    # Get logged in user
+    # Get user 
     user = User.objects.get(pk=request.user.id)
     print("Debug:", user, type(user), user.following.all())
     
@@ -200,9 +191,10 @@ def follow(request, user_id):
         instance.followed_by.add(user)
         print("Debug: user now following profile")
 
-    return JsonResponse({"message": "Follow function executed"}, status=201)
+    return JsonResponse({"message": "Profile successfully followed / unfollowed"}, status=201)
 
 
+# API function: Edit post
 @csrf_exempt
 def edit(request, post_id):
 
@@ -223,9 +215,10 @@ def edit(request, post_id):
 
     print(tweet)
 
-    return JsonResponse({"message": "Tweet successfully edited", "new_text": new_text}, status=201)
+    return JsonResponse({"message": "Post successfully editted", "new_text": new_text}, status=201)
 
 
+# API function: Like post
 @csrf_exempt
 def like(request, post_id):
 
@@ -242,4 +235,4 @@ def like(request, post_id):
         print("Debug: user does not yet like this Bleet - liking now")
         tweet.like.add(user)
 
-    return JsonResponse({"message": "Like function executed"})
+    return JsonResponse({"message": "Post successfully liked / disliked"})

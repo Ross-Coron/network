@@ -11,4 +11,3 @@ class TweetAdmin(admin.ModelAdmin):
 admin.site.register(User)
 admin.site.register(Follow)
 admin.site.register(Tweet, TweetAdmin)
-#admin.site.register(Like)
