@@ -72,7 +72,7 @@ def profile(request, user_id):
     for x in following:
         followList.append(x.user.id)
     
-    # Gets posts from profile in reverse chronolical order
+    # Gets posts from profile in reverse chronological order
     tweets = Tweet.objects.filter(author=user_id).order_by('-posted')
     # print("Debug | profile's posts: ",tweets)
 
@@ -100,7 +100,7 @@ def following(request):
 
     # print("Debug | User follows: ", usersFollowedIds)
     
-    # ets posts from profiles in reverse chronolical order
+    # Gets posts from profiles in reverse chronological order
     tweets = Tweet.objects.filter(author__in=usersFollowedIds).order_by('-posted')
     
     return render(request, "network/following.html", {
@@ -184,7 +184,6 @@ def follow(request, user_id):
         print("Debug: user no longer following profile")
 
     else:
-        
         print("Debug: user NOT currently following profile")
         instance = Follow.objects.get(user=profile)
         
@@ -198,41 +197,40 @@ def follow(request, user_id):
 @csrf_exempt
 def edit(request, post_id):
 
-    print("You are here")
-    print(post_id)
-
-    print(json.loads(request.body))
-
+    # print("Debug | Edit function, post: ", post_id)
+ 
+    # Get original post
     tweet = Tweet.objects.get(pk=post_id)
 
+    # Gets new text (edited) in JSON format
     data = json.loads(request.body)
     new_text = data.get("tweet", "t")
-    print(tweet)
-
-
+    
+    # Update post to new text
     tweet.tweetText = new_text
     tweet.save()
 
-    print(tweet)
-
-    return JsonResponse({"message": "Post successfully editted", "new_text": new_text}, status=201)
+    # Return new text for instant display
+    return JsonResponse({"message": "Post successfully edited", "new_text": new_text}, status=201)
 
 
 # API function: Like post
 @csrf_exempt
 def like(request, post_id):
 
-    # Debug: print("Debug: like route")
+    # Debug: print("Debug | Like function")
 
+    # Get user and relevant post
     user = User.objects.get(id=request.user.id)
     tweet = Tweet.objects.get(id=post_id)
 
+    # If user likes post unlike (and vice versa)
     if user in tweet.like.all():
-        print("Debug: user already likes this Bleet - unliking now")
+        print("Debug | User already likes this post - unliking now")
         tweet.like.remove(user)
 
     else:
-        print("Debug: user does not yet like this Bleet - liking now")
+        print("Debug: user does not yet like this post - liking now")
         tweet.like.add(user)
 
     return JsonResponse({"message": "Post successfully liked / disliked"})
