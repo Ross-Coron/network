@@ -3,6 +3,7 @@
 
 	<br>
 	<h2>All Posts</h2>
+	<hr><br>
 
 	<!-- Show paginated posts -->
 	{% for tweet in page_obj %}
@@ -29,6 +30,7 @@
 	{% endfor %}
 
 	<!-- Pagination navigation -->
+	<br>
 	<nav aria-label="Page navigation example">
 		<ul class="pagination justify-content-center">
 			{% if page_obj.has_previous %}
