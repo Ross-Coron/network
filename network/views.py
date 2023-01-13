@@ -184,9 +184,12 @@ def follow(request, user_id):
         print("Debug: user no longer following profile")
 
     else:
-        print("Debug: user NOT currently following profile")
-        instance = Follow.objects.get(user=profile)
         
+        print("Debug: user NOT currently following profile")
+        instance = Follow(user=profile)
+        instance.save()
+
+ 
         instance.followed_by.add(user)
         print("Debug: user now following profile")
 

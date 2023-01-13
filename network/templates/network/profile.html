@@ -1,18 +1,9 @@
 {% extends "network/layout.html" %}
 {% block body %}
 
-<!-- Debug:
-<ul>
-  <li>Signed in as: {{ user.username }}</strong>
-  <li>Following: {{ following }} / Followers: {{ followedBy }}
-  <li>Signed in user is following this profile? {{ following_status }}
-  </ul> 
--->
-
 <br>
 <div class="inline">
-
-  <hr><br>
+<hr><br>
 
   <h2 data-id="{{viewed_profile_id}}">User: {{viewed_profile}}</h2>
 
@@ -21,7 +12,7 @@
 
   {% else %}
   {% if following_status == True %} 
-  <button type="button" class="btn btn-secondary ms-4" onclick="follow()">Unfollow</button>
+  <button type="button" class="btn btn-danger ms-4" onclick="follow()">Unfollow</button>
   {% elif following_status == False %}
   <button type="button" class="btn btn-primary ms-4" onclick="follow()">Follow</button>
   {% endif %}
@@ -29,9 +20,13 @@
 
 </div>
   <hr>
-
-{% for tweet in tweets %}
 <br>
+  <div class="container">
+{% for tweet in tweets %}
+    <div class="row justify-content-center mb-4">
+
+
+
 <div class="ms-2 card" style="width: 35rem" data-id="{{tweet.id}}";>
   <div class="card-body rounded">
    <h5 class="card-title" href="#"><a href="{% url 'profile' user_id=tweet.author.id%}"><b>@{{ tweet.author}}</b></h5></a>
@@ -41,7 +36,7 @@
    <button class="btn btn-primary float-end booboo">Edit</button>
  </div>
 </div>
-
+</div>
 {% endfor %}
 
 
@@ -50,8 +45,9 @@
   function follow() {
 
     const button = document.querySelector('button')
-    let post = document.querySelector('h1').dataset.id
-    console.log(`Bleet number ${post}`)
+    let post = document.querySelector('h2').dataset.id
+    console.log(`User number ${post}`)
+
 
     if (button.innerHTML == "Follow") {
       console.log("Follow button clicked")
@@ -62,6 +58,7 @@
         console.log(data);
 
         button.innerHTML = "Unfollow"
+        button.className = "btn btn-danger ms-4"
 
       })
 
@@ -75,7 +72,8 @@
         console.log(data); 
 
         button.innerHTML = "Follow"
-        
+        button.className = "btn btn-primary ms-4"
+
       })
     }
   };

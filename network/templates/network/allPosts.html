@@ -6,8 +6,18 @@
 	<hr><br>
 
 	<!-- Show paginated posts -->
-	{% for tweet in page_obj %}
-	<br>
+	
+		
+
+	<div class="container">
+{% for tweet in page_obj %}
+  	<div class="row justify-content-center mb-4">
+  		
+ 
+
+
+
+
 	<div class="ms-2 card" style="width: 35rem" data-id="{{tweet.id}}";>
 		<div class="card-body rounded">
 			<h5 class="card-title"><a href="{% url 'profile' user_id=tweet.author.id%}"><b>@{{ tweet.author}}</b></h5></a>
@@ -27,6 +37,8 @@
 			{% endif %}
 		</div>
 	</div>
+	<br>
+</div>
 	{% endfor %}
 
 	<!-- Pagination navigation -->
