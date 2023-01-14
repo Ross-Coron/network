@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -11,11 +12,20 @@ from .models import *   # Import all models
 
 
 # Index route (default)
+
 def index(request):
-    return render(request, "network/index.html")
+
+    if request.user.is_authenticated:
+        return render(request, "network/index.html")
+
+    # Everyone else is prompted to sign in
+    else:
+        return HttpResponseRedirect(reverse("login"))
+    
 
 
 # Create new post
+@login_required(redirect_field_name='my_redirect_field')
 def tweet(request):
 
     if request.method == "POST":
@@ -36,6 +46,7 @@ def tweet(request):
 
 
 # View all posts
+@login_required(redirect_field_name='my_redirect_field')
 def allPosts(request):
 
     # Get all posts and paginate (10 posts per page)
@@ -53,11 +64,8 @@ def allPosts(request):
 
 
 # View user profile and their posts
+@login_required(redirect_field_name='my_redirect_field')
 def profile(request, user_id):
-
-   
-
-
 
     # Get profile
     profile = User.objects.get(id=user_id)
@@ -96,6 +104,7 @@ def profile(request, user_id):
 
 
 # Displays posts from profiles user is following
+@login_required(redirect_field_name='my_redirect_field')
 def following(request):
 
     # Gets all profiles user follows
@@ -143,6 +152,7 @@ def login_view(request):
 
 
 # Log user out
+@login_required(redirect_field_name='my_redirect_field')
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
@@ -177,6 +187,7 @@ def register(request):
 
 
 # API function: follow / unfollow profile
+@login_required(redirect_field_name='my_redirect_field')
 def follow(request, user_id):
     
     # Get user 
@@ -211,6 +222,7 @@ def follow(request, user_id):
 
 # API function: Edit post
 @csrf_exempt
+@login_required(redirect_field_name='my_redirect_field')
 def edit(request, post_id):
 
     # print("Debug | Edit function, post: ", post_id)
@@ -232,6 +244,7 @@ def edit(request, post_id):
 
 # API function: Like post
 @csrf_exempt
+@login_required(redirect_field_name='my_redirect_field')
 def like(request, post_id):
 
     # Debug: print("Debug | Like function")
