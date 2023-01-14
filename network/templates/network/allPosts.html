@@ -32,6 +32,7 @@
    </div>
    {% endfor %}
 
+   <!-- Page navigation -->
    <br>
    <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
@@ -69,14 +70,11 @@
    </nav>
 
    <script>
-
       document.addEventListener('DOMContentLoaded', function() {
-         // hello() // test function
-
          document.querySelectorAll('button').forEach(button => {
             button.onclick = function() {
 
-            // Detects if edit button clicked
+            // Detects if EDIT button clicked
                if (event.target.className === "btn btn-primary float-end edit") {
                   console.log(`Edit button clicked. Post number: ${this.parentElement.parentElement.dataset.id}`)
 
@@ -111,7 +109,7 @@
                      });   
                   }
 
-               // Detects if like button clicked
+               // Detects if LIKE button clicked
                } else if (this.className === "btn btn-secondary float-left" || this.className === "btn btn-danger float-left") {
                   console.log(`Like button clicked. Post number: ${this.parentElement.parentElement.dataset.id}`)
 

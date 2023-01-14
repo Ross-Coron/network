@@ -48,7 +48,7 @@
    </div>
    {% endfor %}
 
-<br>
+   <br>
    <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
          {% if page_obj.has_previous %}
@@ -84,83 +84,83 @@
       </ul>
    </nav>
 
-<script>
+   <script>
 
-   document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener('DOMContentLoaded', function() {
 
-      document.querySelectorAll('button').forEach(button => {
-         button.onclick = function() {
+         document.querySelectorAll('button').forEach(button => {
+            button.onclick = function() {
 
             // Detects if edit button clicked
-            if (event.target.classList.contains("follow")){
+               if (event.target.classList.contains("follow")){
 
-               const button = document.querySelector('button')
-               let post = document.querySelector('h2').dataset.id
-               console.log(`User number ${post}`)
+                  const button = document.querySelector('button')
+                  let post = document.querySelector('h2').dataset.id
+                  console.log(`User number ${post}`)
 
-               if (button.innerHTML == "Follow") {
-                  console.log("Follow button clicked")
+                  if (button.innerHTML == "Follow") {
+                     console.log("Follow button clicked")
 
-                  fetch(`/follow/${post}`)
-                  .then(response => response.json())
-                  .then(data => {
-                    console.log(data);
-                    button.innerHTML = "Unfollow"
-                    button.className = "follow btn btn-danger ms-4"
-                 })
+                     fetch(`/follow/${post}`)
+                     .then(response => response.json())
+                     .then(data => {
+                      console.log(data);
+                      button.innerHTML = "Unfollow"
+                      button.className = "follow btn btn-danger ms-4"
+                   })
 
+                  }
+                  else if (button.innerHTML == "Unfollow") {
+                     console.log("Unfollow button clicked")
+
+                     fetch(`/follow/${post}`)
+                     .then(response => response.json())
+                     .then(data => {
+                      console.log(data); 
+
+                      button.innerHTML = "Follow"
+                      button.className = "follow btn btn-primary ms-4"
+
+                   })
+                  }
                }
-               else if (button.innerHTML == "Unfollow") {
-                  console.log("Unfollow button clicked")
-
-                  fetch(`/follow/${post}`)
-                  .then(response => response.json())
-                  .then(data => {
-                    console.log(data); 
-
-                    button.innerHTML = "Follow"
-                    button.className = "follow btn btn-primary ms-4"
-
-                 })
-               }
-            }
 
             // Detects if like button clicked
-            else if (this.className === "btn btn-secondary float-left" || this.className === "btn btn-danger float-left") {
-               console.log(`Like button clicked. Post number: ${this.parentElement.parentElement.dataset.id}`)
+               else if (this.className === "btn btn-secondary float-left" || this.className === "btn btn-danger float-left") {
+                  console.log(`Like button clicked. Post number: ${this.parentElement.parentElement.dataset.id}`)
 
-               const element = event.target
-               const id = element.parentElement.parentElement.dataset.id
+                  const element = event.target
+                  const id = element.parentElement.parentElement.dataset.id
 
                // Update database then HTML
-               fetch(`/like/${id}`), {
-                  method: 'POST'}
-                  like(element);
+                  fetch(`/like/${id}`), {
+                     method: 'POST'}
+                     like(element);
+                  }
                }
-            }
-         });
-   });
+            });
+      });
 
 
-   function like(tweet) {
+      function like(tweet) {
 
       // Get current number of likes
-      var likes = tweet.querySelector("#number").innerHTML
+         var likes = tweet.querySelector("#number").innerHTML
 
       // Increment / deincrement number of likes and change colour of button
-      if (tweet.classList.contains("btn-secondary")) {
+         if (tweet.classList.contains("btn-secondary")) {
 
-         tweet.className = "btn btn-danger float-left";
-         likes++
-         tweet.querySelector("#number").innerHTML = likes
+            tweet.className = "btn btn-danger float-left";
+            likes++
+            tweet.querySelector("#number").innerHTML = likes
 
-      } else {
+         } else {
 
-         tweet.className = "btn btn-secondary float-left";
-         likes--
-         tweet.querySelector("#number").innerHTML = likes
+            tweet.className = "btn btn-secondary float-left";
+            likes--
+            tweet.querySelector("#number").innerHTML = likes
+         }
       }
-   }
 
-</script>
-{% endblock %}
+   </script>
+   {% endblock %}
