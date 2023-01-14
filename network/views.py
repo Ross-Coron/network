@@ -55,6 +55,10 @@ def allPosts(request):
 # View user profile and their posts
 def profile(request, user_id):
 
+   
+
+
+
     # Get profile
     profile = User.objects.get(id=user_id)
 
@@ -76,8 +80,12 @@ def profile(request, user_id):
     tweets = Tweet.objects.filter(author=user_id).order_by('-posted')
     # print("Debug | profile's posts: ",tweets)
 
-    # Render HTML page passing in necessary variables
+    paginator = Paginator(tweets, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, "network/profile.html", {
+        "page_obj": page_obj,
         "viewed_profile": profile.username,
         "viewed_profile_id": user_id,
         "tweets": tweets,
@@ -103,10 +111,15 @@ def following(request):
     # Gets posts from profiles in reverse chronological order
     tweets = Tweet.objects.filter(author__in=usersFollowedIds).order_by('-posted')
     
+
+    paginator = Paginator(tweets, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, "network/following.html", {
-        "tweets": tweets
+        "page_obj": page_obj
     })
-    
+
 
 # Log user in
 def login_view(request):
