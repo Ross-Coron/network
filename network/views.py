@@ -12,7 +12,6 @@ from .models import *   # Import all models
 
 
 # Index route (default)
-
 def index(request):
 
     if request.user.is_authenticated:
@@ -25,7 +24,7 @@ def index(request):
 
 
 # Create new post
-@login_required(redirect_field_name='my_redirect_field')
+@login_required(redirect_field_name='my_redirect_field')   # Redirect to login. Route saved in settings.py
 def tweet(request):
 
     if request.method == "POST":
@@ -50,7 +49,7 @@ def tweet(request):
 def allPosts(request):
 
     # Get all posts and paginate (10 posts per page)
-    tweets = Tweet.objects.all()
+    tweets = Tweet.objects.all().order_by('-posted')
     paginator = Paginator(tweets, 10)
 
     page_number = request.GET.get('page')

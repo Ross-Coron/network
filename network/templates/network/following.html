@@ -3,7 +3,8 @@
 
 <br>
 <h2>Following</h2>
-<hr><br>
+<hr>
+<br>
 
 <div class="container">
    <!-- Show paginated posts -->
@@ -34,7 +35,7 @@
 
    <!-- Page navigation -->
    <br>
-   <nav aria-label="Page navigation example">
+   <nav aria-label="Page">
       <ul class="pagination justify-content-center">
          {% if page_obj.has_previous %}
          <li class="page-item">
@@ -75,7 +76,7 @@
          document.querySelectorAll('button').forEach(button => {
             button.onclick = function() {
 
-               // Detects if like button clicked
+               // Detects if LIKE button clicked
                if (this.className === "btn btn-secondary float-left" || this.className === "btn btn-danger float-left") {
                   console.log(`Like button clicked. Post number: ${this.parentElement.parentElement.dataset.id}`)
 

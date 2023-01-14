@@ -9,8 +9,8 @@
 <hr><br>
 
 <form action="{% url 'login' %}" method="post">
- {% csrf_token %}
- <div class="form-group">
+  {% csrf_token %}
+  <div class="form-group">
    <input autofocus class="form-control" type="text" name="username" placeholder="Username">
 </div>
 <br>

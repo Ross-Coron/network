@@ -3,7 +3,8 @@
 
 <br>
 <h2>All Posts</h2>
-<hr><br>
+<hr>
+<br>
 
 <div class="container">
    <!-- Show paginated posts -->
@@ -34,7 +35,7 @@
 
    <!-- Page navigation -->
    <br>
-   <nav aria-label="Page navigation example">
+   <nav aria-label="Page">
       <ul class="pagination justify-content-center">
          {% if page_obj.has_previous %}
          <li class="page-item">
@@ -125,7 +126,7 @@
             });
       });
 
-
+      // Like / unlike post
       function like(tweet) {
 
          // Get current number of likes
