@@ -6,20 +6,4 @@
 .inline {
   display: flex;
   align-items: center; /* Vertical align the elements to the center */
-
-}
-
-table { 
-    table-layout:fixed;
-}
-
-.line_break {
-    //width:1000px;
-    //height: 5px;
-    //float: left;
-    //color: black;
-    //padding-top: 3px;
-    //background-color: rgba(255,255,255,.5);
-    border: none;  // remove default style
-    border-bottom: 3px solid black;  //apply style
 }

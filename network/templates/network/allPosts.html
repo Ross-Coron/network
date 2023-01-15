@@ -75,7 +75,7 @@
          document.querySelectorAll('button').forEach(button => {
             button.onclick = function() {
 
-            // Detects if EDIT button clicked
+               // Detects if EDIT button clicked
                if (event.target.className === "btn btn-primary float-end edit") {
                   console.log(`Edit button clicked. Post number: ${this.parentElement.parentElement.dataset.id}`)
 
